@@ -145,7 +145,7 @@ end
 
 %%%%%%%%%%%% Figure.9
 % Points on elliptic curve over finite field-2 with  neurons  
-% Points on elliptic curve over finite field-2 with  neurons  
+
 
 clc
 clear
