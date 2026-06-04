@@ -144,89 +144,188 @@ ylabel('Y')
 end
 
 %%%%%%%%%%%% Figure.9
-% Points on elliptic curve over finite field-2 with pyramidal neurons  
+% Points on elliptic curve over finite field-2 with  neurons  
+% Points on elliptic curve over finite field-2 with  neurons  
+
 clc
 clear
-syms r s t
-disp('***** y^2 = x^3 + ax + b mod p *****');
+close all
+
+disp('***** y^2 = x^3 + ax + b mod p *****') % p=15,a=3,b=0
+
+p=input('insert prime p: ');
+a=input('insert coefficient a: ');
+b=input('insert coefficient b: ');
+
+x=0:p-1;
+y=0:p-1;
+
+figure
+hold on
+
+for i=1:length(x)
+
+    for j=1:length(y)
+
+        if mod(y(j)^2 - x(i)^3 - a*x(i) - b,p)==0
+
+            plot(x(i),y(j),...
+                'ko',...
+                'MarkerFaceColor','k',...
+                'MarkerSize',8)
+
+        end
+
+    end
+
+end
+
+xlabel('x')
+ylabel('y')
+
+title(sprintf(...
+'P(x,y)=y^2-x^3-%dx-%d \\equiv 0 (mod %d)',...
+a,b,p))
+
+axis equal
+grid on
+
+
+% The panel-B and B'
+clc
+clear
+
+disp('***** Homogeneous Elliptic Curve *****');
+disp('***** z*y^2 - x^3 - a*x*z^2 - b*z^3 = 0 (mod p) *****'); % p=16 a=3,b=2
+
 n=input('insert prime p: ');
 a=input('insert coefficient a: ');
 b=input('insert coefficient b: ');
-x=[0:n-1];
-%y=(sqrt(x.^3 + a.*x + b));
-y=[0:n-1];
-z=[0:n-1]
+
+x=0:n-1;
+y=0:n-1;
+z=0:n-1;
+
 figure
+hold on
+
 for i=1:n
     for j=1:n
-    for k=1:n    
-         
-        if rem((((y(j))^2).*(z(k)^2))-(((x(i))^3).*(z(k)^3))-a*((x(i)).*(z(k)))-b,n)==0
-                        r=.7
-[s,t]= meshgrid(-2.*pi:pi./20:2.*pi, -2.*pi:pi./20:2.*pi);
- X=(r.*cos(s).*t.^5)./120 - (r.*cos(s).*t.^3)./6 + r.*cos(s).*t
- Y=(r.*sin(s).*t.^5)./120 - (r.*sin(s).*t.^3)./6 + r.*sin(s).*t
-Z=(r.*t.^4)./24 - (r.*t.^2)./2 + r
- ZX=((real((zeta(exp((r.*cos(s).*t.^5)./120 - (r.*cos(s).*t.^3)./6 + r.*cos(s).*t)).^2))).^(-1)).*(r.*cos(s).*sin(t));
- ZY=((real(((zeta(exp((r.*sin(s).*t.^5)./120 - (r.*sin(s).*t.^3)./6 + r.*sin(s).*t)).^2)))).^(-1)).*(r.*sin(s).*sin(t));
-  ZZ = ((real(((zeta(exp((r.*t.^4)./24 - (r.*t.^2)./2 + r)).^2)))).^(-1)).*(r.*cos(t));
+        for k=1:n
 
-  h2=surf((ZX+x(i)),(ZY+y(j)),(ZZ+z(k)))
-            %p=plot3(x(i),y(j),z(k),'r o');
-         
+            if mod( ...
+                z(k)*(y(j)^2) ...
+                - (x(i)^3) ...
+                - a*x(i)*(z(k)^2) ...
+                - b*(z(k)^3), ...
+                n) == 0
+
+                plot3(x(i),y(j),z(k),'.','MarkerSize',20)
+
+            end
         end
-        
-           
-           hold on
-
-                    
-         end
     end
 end
 
+xlabel('x')
+ylabel('y')
+zlabel('z')
+
+grid on
+axis equal
+view(3)
+
+
+% Panel C
+clc
+clear
+syms r s t
+disp('***** Homogeneous Elliptic Curve *****');
+disp('***** z*y^2 - x^3 - a*x*z^2 - b*z^3 = 0 (mod p) *****');
+
+n=input('insert prime p: ');
+a=input('insert coefficient a: ');
+b=input('insert coefficient b: ');
+
+x=[0:n-1];
+y=[0:n-1];
+z=[0:n-1];
+
+figure
+for i=1:n
+    for j=1:n
+        for k=1:n
+
+            if mod( ...
+                z(k)*(y(j)^2) ...
+                - (x(i)^3) ...
+                - a*x(i)*(z(k)^2) ...
+                - b*(z(k)^3), ...
+                n) == 0
+
+                r=.7;
+
+                [s,t]= meshgrid(-2.*pi:pi./20:2.*pi, -2.*pi:pi./20:2.*pi);
+
+                ZX=((real((zeta(exp((r.*cos(s).*t.^5)./120 - (r.*cos(s).*t.^3)./6 + r.*cos(s).*t)).^2))).^(-1)).*(r.*cos(s).*sin(t));
+                ZY=((real(((zeta(exp((r.*sin(s).*t.^5)./120 - (r.*sin(s).*t.^3)./6 + r.*sin(s).*t)).^2)))).^(-1)).*(r.*sin(s).*sin(t));
+                ZZ=((real(((zeta(exp((r.*t.^4)./24 - (r.*t.^2)./2 + r)).^2)))).^(-1)).*(r.*cos(t));
+
+                surf((ZX+x(i)),(ZY+y(j)),(ZZ+z(k)))
+                hold on
+
+            end
+        end
+    end
+end
 
 grid;
 hold off;
-% Points on elliptic curve over finite field-2 with pyramidal neurons-3- with sphere neurons 
+
+% Panel C':Sphere / non-pyramidal neurons
+
 clc
 clear
 syms r s t
-disp('***** y^2 = x^3 + ax + b mod p *****');
+
+disp('***** Homogeneous Elliptic Curve *****');
+disp('***** z*y^2 - x^3 - a*x*z^2 - b*z^3 = 0 (mod p) *****');
+
 n=input('insert prime p: ');
 a=input('insert coefficient a: ');
 b=input('insert coefficient b: ');
+
 x=[0:n-1];
-%y=(sqrt(x.^3 + a.*x + b));
 y=[0:n-1];
-z=[0:n-1]
+z=[0:n-1];
+
 figure
 for i=1:n
     for j=1:n
-    for k=1:n    
-         
-        if rem((((y(j))^2).*(z(k)^2))-(((x(i))^3).*(z(k)^3))-a*((x(i)).*(z(k)))-b,n)==0
-                        r=1.9
-[s,t]= meshgrid(-2.*pi:pi./20:2.*pi, -2.*pi:pi./20:2.*pi);
- X=(r.*cos(s).*t.^5)./120 - (r.*cos(s).*t.^3)./6 + r.*cos(s).*t
- Y=(r.*sin(s).*t.^5)./120 - (r.*sin(s).*t.^3)./6 + r.*sin(s).*t
-Z=(r.*t.^4)./24 - (r.*t.^2)./2 + r
- ZX=-(sin(t)).*sin((real((zeta(exp((r.*cos(s).*t.^5)./120 - (r.*cos(s).*t.^3)./6 + r.*cos(s).*t)).^2))).^(-1)).*(r.*cos(s).*sin(t));
- ZY=-(sin(t)).*sin((real(((zeta(exp((r.*sin(s).*t.^5)./120 - (r.*sin(s).*t.^3)./6 + r.*sin(s).*t)).^2)))).^(-1)).*(r.*sin(s).*sin(t));
-  ZZ =-(sin(t)).*sin((real(((zeta(exp((r.*t.^4)./24 - (r.*t.^2)./2 + r)).^2)))).^(-1)).*(r.*cos(t));
+        for k=1:n
 
-  h2=surf((ZX+x(i)),(ZY+y(j)),(ZZ+z(k)))
-            %p=plot3(x(i),y(j),z(k),'r o');
-         
+            if mod( ...
+                z(k)*(y(j)^2) ...
+                - (x(i)^3) ...
+                - a*x(i)*(z(k)^2) ...
+                - b*(z(k)^3), ...
+                n) == 0
+
+                r=1.9;
+
+                [s,t]= meshgrid(-2.*pi:pi./20:2.*pi, -2.*pi:pi./20:2.*pi);
+
+                ZX=-(sin(t)).*sin((real((zeta(exp((r.*cos(s).*t.^5)./120 - (r.*cos(s).*t.^3)./6 + r.*cos(s).*t)).^2))).^(-1)).*(r.*cos(s).*sin(t));
+                ZY=-(sin(t)).*sin((real(((zeta(exp((r.*sin(s).*t.^5)./120 - (r.*sin(s).*t.^3)./6 + r.*sin(s).*t)).^2)))).^(-1)).*(r.*sin(s).*sin(t));
+                ZZ=-(sin(t)).*sin((real(((zeta(exp((r.*t.^4)./24 - (r.*t.^2)./2 + r)).^2)))).^(-1)).*(r.*cos(t));
+
+                surf((ZX+x(i)),(ZY+y(j)),(ZZ+z(k)))
+                hold on
+
+            end
         end
-        
-           
-           hold on
-
-                    
-         end
     end
 end
-
 
 grid;
 hold off;
